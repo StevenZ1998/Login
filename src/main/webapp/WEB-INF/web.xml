@@ -15,7 +15,10 @@
   		<url-pattern>/userController/*</url-pattern>
   	</servlet-mapping>
   	
-  	
+  	 <servlet-mapping>
+  		<servlet-name>frontcontroller</servlet-name>
+  		<url-pattern>/branchController/*</url-pattern>
+  	</servlet-mapping>
   
     <filter>
     	<filter-name>CorsFilter</filter-name>
