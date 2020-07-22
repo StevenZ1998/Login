@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class UserDAO implements UserDAOInterface{
 			getConnection();
 			
 			// Inserting values to create a new User into the User table. 
-			PreparedStatement statementVar = conn.prepareStatement("INSERT INTO users (First_Name, Last_Name, Username, Age, DOB, Gender, Email, Phone_Number, ASVAB_Score, Branch_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement statementVar = conn.prepareStatement("INSERT INTO users (First_Name, Last_Name, Username, Age, DOB, Gender, Email, Phone_Number, ASVAB_Score, Branch_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			statementVar.setString(1, user.getFirstName());
 			statementVar.setString(2, user.getLastName());
 			statementVar.setString(3, user.getUsername());
@@ -54,8 +55,13 @@ public class UserDAO implements UserDAOInterface{
 			
 			// Update query.
 			statementVar.executeUpdate();
+			ResultSet keys = statementVar.getGeneratedKeys();
 			
-			
+			while(keys.next()) {
+				int userid = keys.getInt(1);
+				System.out.println("Generated Key: " + userid);
+				user.setUserId(userid);
+			}
 		}
 		
 		// Boiler try/catch/finally from this point on.
